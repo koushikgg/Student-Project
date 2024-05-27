@@ -180,9 +180,9 @@ const studentList = [
 var condition = true;
 
 while (condition) {
-    var userInput = readline.question("Select one of these options:\n 1. Take Test\n 2. View Student Result \n 3. View classwise result\n 4. Detail Analysis of Result\n");
+    var userInput = readline.question("Select one of these options:\n 1. Take Test\n 2. View Student Result \n 3. View classwise result\n 4. Detail Analysis of Result\n 5. View Class Wise Top Three Performers\n");
 
-    if (userInput != 1 && userInput != 2 && userInput != 3 && userInput != 4) {
+    if (userInput != 1 && userInput != 2 && userInput != 3 && userInput != 4 && userInput != 5) {
         console.log("Please enter a number in the above range only.");
         continue;
     }
@@ -217,6 +217,15 @@ while (condition) {
             }
             console.log("This is the Detail Analysis of Result")
             DetailAnalysisofResult();
+            condition = false; // End the loop
+            break;
+        case 5:
+            if (!studentList[0].totalMarks) {
+                console.log("Result is not genrated. Please take the test to generate the result before viewing Class Wise Top Three Performer.");
+                continue;
+            }
+            console.log("This is the class wise top three Performer")
+            classwisetopthreeperformer();
             condition = false; // End the loop
             break;
         default:
@@ -330,5 +339,32 @@ function DetailAnalysisofResult(){
         }
         console.log(`Class:${i}, Students:${totalStudents}, Averagemarks:${averagetotalmarks}, Average Percentage:${averagepercentage.toFixed(2)}, Grade:${overallgradeforclass}, failedCount:${failedstudentscount}, failedPercentage:${failedstudentspercentage}, passedCount:${passedstudentscount}, passedPercentage:${passedstudentspercentage}`)
         
+    }
+}
+
+//this function shows top three performer
+function classwisetopthreeperformer(){
+    for (let i =1; i<6;i++){
+        console.log(`This is Class ${i} Top Three Performer`)
+        let firstRankStudent={percentage:0};
+        let secondRankStudent={percentage:0};
+        let thirdRankStudent={percentage:0};
+        studentList.forEach(student=>{
+            if (student.class==i){
+                if(firstRankStudent.percentage<student.percentage){
+                    thirdRankStudent=secondRankStudent
+                    secondRankStudent=firstRankStudent
+                    firstRankStudent=student
+                }else if(student.percentage>secondRankStudent.percentage && student.percentage<=firstRankStudent.percentage){
+                    thirdRankStudent=secondRankStudent
+                    secondRankStudent=student
+                }else if(student.percentage>thirdRankStudent.percentage && student.percentage<=secondRankStudent.percentage ){
+                    thirdRankStudent=student
+                }
+            }
+        })
+        console.log(`1st Performer ${firstRankStudent.name} Total Marks:${firstRankStudent.totalMarks} Percentage:${firstRankStudent.percentage}`)
+        console.log(`2nd Performer ${secondRankStudent.name} Total Marks:${secondRankStudent.totalMarks} Percentage:${secondRankStudent.percentage}`)
+        console.log(`3rd Performer ${thirdRankStudent.name} Total Marks:${thirdRankStudent.totalMarks} Percentage:${thirdRankStudent.percentage}`)
     }
 }
