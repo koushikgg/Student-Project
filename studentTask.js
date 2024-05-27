@@ -180,9 +180,9 @@ const studentList = [
 var condition = true;
 
 while (condition) {
-    var userInput = readline.question("Select one of these options:\n 1. Take Test\n 2. Generate Result\n 3. View Student Result \n 4. View classwise result\n");
+    var userInput = readline.question("Select one of these options:\n 1. Take Test\n 2. View Student Result \n 3. View classwise result\n");
 
-    if (userInput != 1 && userInput != 2 && userInput != 3 && userInput!=4) {
+    if (userInput != 1 && userInput != 2 && userInput != 3) {
         console.log("Please enter a number in the above range only.");
         continue;
     }
@@ -190,28 +190,20 @@ while (condition) {
     switch (parseInt(userInput)) {
         case 1:
             takeTest();
-            console.log("Test Taken");
+            console.log("Test Taken and Result Genrated");
             break;
         case 2:
-            if (!studentList[0].testScores.length > 0) {
-                console.log("Please take the test before generating the result.");
-                continue;
-            }
-            generateResult();
-            console.log("Result Generated");
-            break;
-        case 3:
             if (!studentList[0].totalMarks) {
-                console.log("Result is not genrated. Please take the test and generate the result before viewing.");
+                console.log("Result is not genrated. Please take the test to generate the result before viewing Student Result.");
                 continue;
             }
             console.log("This is the Students Result")
             viewStudentResult();
             condition = false; // End the loop
             break;
-        case 4:
+        case 3:
             if (!studentList[0].totalMarks) {
-                console.log("Result is not genrated. Please take the test and generate the result before viewing the Result Class wise.");
+                console.log("Result is not genrated. Please take the test to generate the result before viewing the Result Class wise.");
                 continue;
             }
             console.log("This is the Class Wise Result")
@@ -250,17 +242,6 @@ function takeTest(){
                 }
             ]
             studentObj.testScores.push(...sunbjectMArks)
-        }
-    }
-}
-
-//this function creates the total marks and the percentage to particular student
-function generateResult(){
-    for (let studentObj of studentList){
-        if (!studentObj['totalMarks'] && !studentObj['percentage']){
-            let mathMarks=studentObj.testScores[0].marks;
-            let scienceMarks=studentObj.testScores[1].marks;
-            let socialMarks=studentObj.testScores[2].marks;
             let totalMark=mathMarks+scienceMarks+socialMarks;
             let percentages=((totalMark)/150)*100;
             studentObj['totalMarks']=totalMark;
@@ -268,6 +249,7 @@ function generateResult(){
         }
     }
 }
+
 
 //this function is used to view Student result
 function viewStudentResult(){
