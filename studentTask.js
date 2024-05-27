@@ -180,9 +180,9 @@ const studentList = [
 var condition = true;
 
 while (condition) {
-    var userInput = readline.question("Select one of these options:\n 1. Take Test\n 2. View Student Result \n 3. View classwise result\n");
+    var userInput = readline.question("Select one of these options:\n 1. Take Test\n 2. View Student Result \n 3. View classwise result\n 4. Detail Analysis of Result\n");
 
-    if (userInput != 1 && userInput != 2 && userInput != 3) {
+    if (userInput != 1 && userInput != 2 && userInput != 3 && userInput != 4) {
         console.log("Please enter a number in the above range only.");
         continue;
     }
@@ -208,6 +208,15 @@ while (condition) {
             }
             console.log("This is the Class Wise Result")
             viewClassWiseResult();
+            condition = false; // End the loop
+            break;
+        case 4:
+            if (!studentList[0].totalMarks) {
+                console.log("Result is not genrated. Please take the test to generate the result before viewing Detail Analysis of Result.");
+                continue;
+            }
+            console.log("This is the Detail Analysis of Result")
+            DetailAnalysisofResult();
             condition = false; // End the loop
             break;
         default:
@@ -277,5 +286,49 @@ function viewClassWiseResult(){
             }
         })
         console.log("\n")
+    }
+}
+
+//this function shows the Detail Analysis of Result
+
+function DetailAnalysisofResult(){
+	// - display data.  header format --> class | total students count | & above computed field
+    for (let i =1; i<6;i++){
+        console.log(`This is Class ${i} Detailed Analysis of Result`)
+        let totalStudents=0;
+        let averagetotalmarks=0;
+	    let averagepercentage=0;
+	    let overallgradeforclass=null;
+	    let failedstudentscount =0;
+	    let failedstudentspercentage=0;
+	    let passedstudentscount=0;
+	    let passedstudentspercentage=0;
+        studentList.forEach(student=>{
+            if (student.class==i){
+                totalStudents++;
+                averagetotalmarks+=student.totalMarks
+                averagepercentage+=student.percentage
+                if (student.percentage<35.00){
+                    failedstudentscount++;
+                }else{
+                    passedstudentscount++;
+                }
+            }
+        })
+        averagetotalmarks=averagetotalmarks/totalStudents
+        averagepercentage=averagepercentage/totalStudents
+        failedstudentspercentage=(failedstudentscount/totalStudents)*100
+        passedstudentspercentage=(passedstudentscount/totalStudents)*100
+        if (averagepercentage >= 80.00) {
+            overallgradeforclass = 'A';
+        } else if (averagepercentage >= 60) {
+            overallgradeforclass = 'B';
+        } else if (averagepercentage >= 40) {
+            overallgradeforclass = 'C';
+        } else {
+            overallgradeforclass = 'D';
+        }
+        console.log(`Class:${i}, Students:${totalStudents}, Averagemarks:${averagetotalmarks}, Average Percentage:${averagepercentage.toFixed(2)}, Grade:${overallgradeforclass}, failedCount:${failedstudentscount}, failedPercentage:${failedstudentspercentage}, passedCount:${passedstudentscount}, passedPercentage:${passedstudentspercentage}`)
+        
     }
 }
