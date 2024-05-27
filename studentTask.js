@@ -1,13 +1,6 @@
 const readline = require("readline-sync");
 const studentList = [
         {
-        rollNo: 100,
-        name: "ankith",
-        class: 1,
-        gender: "male",
-        testScores: []
-        },
-        {
         rollNo: 101,
         name: "arpitha",
         class: 1,
@@ -57,9 +50,16 @@ const studentList = [
         testScores: []
         },
         {
-        rollNo: 203,
-        name: "virat",
-        class: 2,
+        rollNo: 402,
+        name: "green",
+        class: 4,
+        gender: "male",
+        testScores: []
+        },
+        {
+        rollNo: 503,
+        name: "rega",
+        class: 5,
         gender: "male",
         testScores: []
         },
@@ -74,6 +74,13 @@ const studentList = [
         rollNo: 300,
         name: "ABD",
         class: 3,
+        gender: "male",
+        testScores: []
+        },
+        {
+        rollNo: 100,
+        name: "ankith",
+        class: 1,
         gender: "male",
         testScores: []
         },
@@ -120,16 +127,16 @@ const studentList = [
         testScores: []
         },
         {
-        rollNo: 402,
-        name: "green",
+        rollNo: 403,
+        name: "lamror",
         class: 4,
         gender: "male",
         testScores: []
         },
         {
-        rollNo: 403,
-        name: "lamror",
-        class: 4,
+        rollNo: 203,
+        name: "virat",
+        class: 2,
         gender: "male",
         testScores: []
         },
@@ -162,13 +169,6 @@ const studentList = [
         testScores: []
         },
         {
-        rollNo: 503,
-        name: "rega",
-        class: 1,
-        gender: "male",
-        testScores: []
-        },
-        {
         rollNo: 504,
         name: "koushik",
         class: 5,
@@ -180,9 +180,9 @@ const studentList = [
 var condition = true;
 
 while (condition) {
-    var userInput = readline.question("Select one of these options:\n 1. Take Test\n 2. Generate Result\n 3. View Student Result \n");
+    var userInput = readline.question("Select one of these options:\n 1. Take Test\n 2. Generate Result\n 3. View Student Result \n 4. View classwise result\n");
 
-    if (userInput != 1 && userInput != 2 && userInput != 3) {
+    if (userInput != 1 && userInput != 2 && userInput != 3 && userInput!=4) {
         console.log("Please enter a number in the above range only.");
         continue;
     }
@@ -205,7 +205,17 @@ while (condition) {
                 console.log("Result is not genrated. Please take the test and generate the result before viewing.");
                 continue;
             }
+            console.log("This is the Students Result")
             viewStudentResult();
+            condition = false; // End the loop
+            break;
+        case 4:
+            if (!studentList[0].totalMarks) {
+                console.log("Result is not genrated. Please take the test and generate the result before viewing the Result Class wise.");
+                continue;
+            }
+            console.log("This is the Class Wise Result")
+            viewClassWiseResult();
             condition = false; // End the loop
             break;
         default:
@@ -267,5 +277,23 @@ function viewStudentResult(){
         let studentTotalMarks= studentObj.totalMarks
         let studentPercentage=studentObj.percentage
         console.log(`${rollNumber} ${studentName} ${studentTotalMarks} ${studentPercentage.toFixed(2)} `)
+    }
+}
+
+
+//this function is used to view result class wise
+function viewClassWiseResult(){
+    for (let i =1; i<6;i++){
+        console.log(`This is Class ${i} Students Result`)
+        studentList.forEach(student=>{
+            if (student.class==i){
+                let rollNumber=student.rollNo;
+                let studentName = student.name;
+                let studentTotalMarks= student.totalMarks
+                let studentPercentage=student.percentage
+                console.log(`${rollNumber} ${studentName} ${studentTotalMarks} ${studentPercentage.toFixed(2)} `)
+            }
+        })
+        console.log("\n")
     }
 }
